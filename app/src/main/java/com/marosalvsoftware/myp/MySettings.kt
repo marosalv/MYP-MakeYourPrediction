@@ -1,5 +1,6 @@
 package com.marosalvsoftware.myp
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -13,13 +14,24 @@ sealed class MySettings {
         val heightDp: Dp = 90.dp
     }
     data object ColorThemeLight : MySettings(){
-        val primary : Color = Color(0xFFB39DDB)
-        val secondary : Color = Color(0xFF353436)
-        val tertiary : Color = Color(0xFFFFF59D)
-        val background : Color = Color(0xFFFFFBFE)
+        val primary : Color = Color(0xFF2E83C7)
+        val secondary : Color = Color(0xFF27702B)
+        val tertiary : Color = Color(0xFFE6F089)
+        val background : Brush = Brush.verticalGradient(listOf(
+            Color(0xFFB4DEFF),
+            Color(0xFF6DBEFF)
+        ))
         val icons : Color = Color(0xFF1C1B1F)
         val text : Color = Color(0xFF1F1D22)
+        val downTrend : Color = Color(0xFFB61B29)
+        val upTrend : Color = Color(0xFF03C77C)
+        val cardBacground : Color = Color(0xFFB4DEFF)
 
+
+    }
+
+    data object DatabasePlaces: MySettings(){
+        val criptos : String = "Criptos"
     }
 
     data object Paddings : MySettings(){

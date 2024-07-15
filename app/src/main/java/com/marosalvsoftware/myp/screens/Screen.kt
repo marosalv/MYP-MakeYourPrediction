@@ -20,7 +20,7 @@ sealed class Screen(
         icon = Icons.Outlined.Home
     )
     data object Settings: Screen(
-        name = "MySettings",
+        name = "Settings",
         route = "settings",
         description = "MySettings Screen",
         icon = Icons.Default.Settings

@@ -5,6 +5,10 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        create("release") {
+        }
+    }
     namespace = "com.marosalvsoftware.myp"
     compileSdk = 34
 
@@ -19,15 +23,19 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        missingDimensionStrategy("environment", "production")
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            isShrinkResources = true
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -52,6 +60,12 @@ android {
 
 dependencies {
 
+    //implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation("androidx.profileinstaller:profileinstaller:1.3.1")
+
+    //implementation("com.google.code.gson:gson:2.10.1")
+
+    //implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 
     implementation (libs.androidx.material.icons.extended)
     implementation(libs.androidx.compose.material)
@@ -65,6 +79,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.testng)
+    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +88,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //SplashScreen
+    implementation(libs.androidx.core.splashscreen)
 }
