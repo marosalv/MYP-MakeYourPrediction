@@ -409,6 +409,8 @@ enum class CryptoListTicker(val ticker:String){
     Decentraland ("MANA"),
     Algorand ("ALGO")
 }
+
+
 fun UpdateDatesCardFiller(activity: MainActivity): List<CardFiller> {
     //TODO fare arrivare i prezzi dal server Cionbase o Coinmarketcap per aggiornare il prezzo giornaliero
     //TODO Aggiornare anche l'ultima votazione fatta dall'utente tramite Firebase oppure una variabile salvata localmente
