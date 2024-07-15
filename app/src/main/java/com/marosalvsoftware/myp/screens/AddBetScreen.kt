@@ -2,8 +2,6 @@ package com.marosalvsoftware.myp.screens
 
 import android.content.Context
 import android.widget.Toast
-import androidx.collection.MutableObjectList
-import androidx.collection.mutableObjectListOf
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,14 +36,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,8 +54,8 @@ import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.MySettings
-import com.marosalvsoftware.myp.SetDateCardFiller
-import com.marosalvsoftware.myp.UpdateDatesCardFiller
+import com.marosalvsoftware.myp.saveDateVoteTrendCardFiller
+import com.marosalvsoftware.myp.updateDatesCardFiller
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -80,7 +75,7 @@ fun AddBetScreen(
 
         val state = rememberLazyListState()
 
-        val updatedList = UpdateDatesCardFiller(activity = activity)
+        val updatedList = updateDatesCardFiller(activity = activity)
 
         LazyColumn(
             modifier = Modifier
@@ -245,7 +240,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                                 popUpState.value = !popUpState.value
 
                                 lastVote.value =
-                                    SaveVote(
+                                    saveVote(
                                     cardFiller = cardFiller,
                                     isUpTrend = false,
                                     activity = activity
@@ -269,7 +264,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                                 activity.toast("Premuto positive trend")
                                 popUpState.value = !popUpState.value
                                 lastVote.value =
-                                    SaveVote(
+                                    saveVote(
                                     cardFiller = cardFiller,
                                     isUpTrend = true,
                                     activity = activity
@@ -293,15 +288,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
     }
 
 }
-//
-//fun UpdateViewedList(cardFiller: CardFiller) {
-//    for (card in updatedList.) {
-//        if(card.ticker == cardFiller.ticker)
-//            updatedList.value
-//    }
-//}
-
-public fun fromTodayDate(i: Long): LocalDate {
+fun fromTodayDate(i: Long): LocalDate {
     return LocalDate.now().plusDays(i)
 }
 
@@ -313,9 +300,9 @@ fun isAlreadyVoted(lastVote: LocalDate): Boolean {
     return LocalDate.now().minusDays(1).isBefore(lastVote)
 }
 
-fun SaveVote(cardFiller: CardFiller, isUpTrend: Boolean, activity: MainActivity) : LocalDate{
+fun saveVote(cardFiller: CardFiller, isUpTrend: Boolean, activity: MainActivity) : LocalDate{
     cardFiller.lastVote = LocalDate.now()
-    SetDateCardFiller(
+    saveDateVoteTrendCardFiller(
         activity = activity,
         cardFiller = cardFiller,
         lastVote = cardFiller.lastVote,

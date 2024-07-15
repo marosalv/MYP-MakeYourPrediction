@@ -1,7 +1,8 @@
 package com.marosalvsoftware.myp
 
-import android.content.Context
 import androidx.compose.ui.graphics.Color
+import com.marosalvsoftware.myp.dataManager.local.getLocalData
+import com.marosalvsoftware.myp.dataManager.local.SaveLocalData
 import java.time.LocalDate
 
 
@@ -409,44 +410,39 @@ enum class CryptoListTicker(val ticker:String){
     Decentraland ("MANA"),
     Algorand ("ALGO")
 }
-fun UpdateDatesCardFiller(activity: MainActivity): List<CardFiller> {
+
+
+fun updateDatesCardFiller(activity: MainActivity): List<CardFiller> {
     //TODO fare arrivare i prezzi dal server Cionbase o Coinmarketcap per aggiornare il prezzo giornaliero
     //TODO Aggiornare anche l'ultima votazione fatta dall'utente tramite Firebase oppure una variabile salvata localmente
 
-    var cardFillerList = CardFiller.GetAllCards().getList()
-
-    val sharedPref =
-        activity.getSharedPreferences(
-            MySettings.DatabasePlaces.criptos,
-            Context.MODE_PRIVATE)
+    val cardFillerList = CardFiller.GetAllCards().getList()
 
     for (cardFiller in cardFillerList){
-        var lastVote =
-        sharedPref.getString(cardFiller.ticker, cardFiller.lastVote.toString())
-        if(lastVote != null){
+        val lastVote =
+        getLocalData(
+            activity = activity,
+            database = MySettings.DatabasePlaces.criptos,
+            key1 = cardFiller.ticker)
+        if(lastVote != null && lastVote != ""){
             cardFiller.lastVote = LocalDate.parse(lastVote)
-        }
-        else{
-            cardFiller.lastVote = LocalDate.MIN
         }
     }
     return cardFillerList
 }
 
-fun SetDateCardFiller(activity: MainActivity, cardFiller: CardFiller){
-    val editor =
-        activity.getSharedPreferences(
-            MySettings.DatabasePlaces.criptos,
-            Context.MODE_PRIVATE).edit()
+fun saveDateVoteTrendCardFiller(
+    activity: MainActivity,
+    cardFiller: CardFiller,
+    lastVote: LocalDate,
+    isUpTrend : Boolean,
+    keyTrend: String = "_trend"){
 
-    editor.putString(cardFiller.ticker, cardFiller.lastVote.toString()).apply()
-}
-fun SetDateCardFiller(activity: MainActivity, cardFiller: CardFiller, lastVote: LocalDate, isUpTrend : Boolean){
-    val editor =
-        activity.getSharedPreferences(
-            MySettings.DatabasePlaces.criptos,
-            Context.MODE_PRIVATE).edit()
-
-    editor.putString(cardFiller.ticker, lastVote.toString()).apply()
-    editor.putString(cardFiller.ticker + "_trend", isUpTrend.toString()).apply()
+    SaveLocalData(
+        activity = activity,
+        database = MySettings.DatabasePlaces.criptos,
+        key1 = cardFiller.ticker,
+        value1 = lastVote.toString(),
+        subKey1 = keyTrend,
+        subValue1 = isUpTrend.toString())
 }
