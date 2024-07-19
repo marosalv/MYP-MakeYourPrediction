@@ -2,8 +2,6 @@ package com.marosalvsoftware.myp.screens
 
 import android.content.Context
 import android.widget.Toast
-import androidx.collection.MutableObjectList
-import androidx.collection.mutableObjectListOf
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,14 +36,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -59,16 +54,15 @@ import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.MySettings
-import com.marosalvsoftware.myp.SetDateCardFiller
-import com.marosalvsoftware.myp.UpdateDatesCardFiller
+import com.marosalvsoftware.myp.saveCardFiller
+import com.marosalvsoftware.myp.updatedCardFiller
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBetScreen(
     navController: NavHostController,
-    activity: MainActivity,
-    paddings: PaddingValues
+    activity: MainActivity
 ) {
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -80,7 +74,7 @@ fun AddBetScreen(
 
         val state = rememberLazyListState()
 
-        val updatedList = UpdateDatesCardFiller(activity = activity)
+        val updatedList = updatedCardFiller(activity = activity)
 
         LazyColumn(
             modifier = Modifier
@@ -117,9 +111,9 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
     val popUpState = remember { mutableStateOf(false) }
 
     val lastVote = remember {
-        mutableStateOf(cardFiller.lastVote)
+        mutableStateOf(cardFiller.voteDateList.last())
     }
-    if (!isAlreadyVoted(lastVote.value)) {
+    if (!isAlreadyVoted(LocalDate.parse(lastVote.value))) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +161,6 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                     IconButton(
                         onClick = {
                             popUpState.value = !popUpState.value
-                            activity.toast("Premuto + ${cardFiller.name} and now is ${popUpState.value}")
                         }
                     )
                     {
@@ -241,15 +234,14 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                         Card(
                             modifier = Modifier.clickable
                             {
-                                activity.toast("Premuto Negative trend")
+                                val voteDate = LocalDate.now().toString()
                                 popUpState.value = !popUpState.value
+                                cardFiller.voteDateList.add(voteDate)
+                                cardFiller.isUptrendList.add(false)
 
-                                lastVote.value =
-                                    SaveVote(
-                                    cardFiller = cardFiller,
-                                    isUpTrend = false,
-                                    activity = activity
-                                )
+                                saveCardFiller(activity = activity, cardFiller = cardFiller)
+
+                                lastVote.value = voteDate
 
                             },
                             colors = CardDefaults.cardColors(containerColor = colorCard),
@@ -266,14 +258,14 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                         Card(
                             modifier = Modifier.clickable
                             {
-                                activity.toast("Premuto positive trend")
+                                val voteDate = LocalDate.now().toString()
                                 popUpState.value = !popUpState.value
-                                lastVote.value =
-                                    SaveVote(
-                                    cardFiller = cardFiller,
-                                    isUpTrend = true,
-                                    activity = activity
-                                )
+                                cardFiller.voteDateList.add(voteDate)
+                                cardFiller.isUptrendList.add(true)
+
+                                saveCardFiller(activity = activity, cardFiller = cardFiller)
+
+                                lastVote.value = voteDate
                             },
                             colors = CardDefaults.cardColors(containerColor = colorCard),
                             elevation = CardDefaults.cardElevation(MySettings.Paddings.small)
@@ -293,15 +285,8 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
     }
 
 }
-//
-//fun UpdateViewedList(cardFiller: CardFiller) {
-//    for (card in updatedList.) {
-//        if(card.ticker == cardFiller.ticker)
-//            updatedList.value
-//    }
-//}
 
-public fun fromTodayDate(i: Long): LocalDate {
+fun fromTodayDate(i: Long): LocalDate {
     return LocalDate.now().plusDays(i)
 }
 
@@ -313,19 +298,13 @@ fun isAlreadyVoted(lastVote: LocalDate): Boolean {
     return LocalDate.now().minusDays(1).isBefore(lastVote)
 }
 
-fun SaveVote(cardFiller: CardFiller, isUpTrend: Boolean, activity: MainActivity) : LocalDate{
-    cardFiller.lastVote = LocalDate.now()
-    SetDateCardFiller(
-        activity = activity,
-        cardFiller = cardFiller,
-        lastVote = cardFiller.lastVote,
-        isUpTrend = isUpTrend
-    )
-    return cardFiller.lastVote
+fun saveVote(activity: MainActivity, cardFiller: CardFiller) {
+
+    saveCardFiller(activity = activity, cardFiller = cardFiller)
 }
 
 @Composable
 @Preview(showBackground = true)
 fun PreviewAddBetScreen() {
-    AddBetScreen(rememberNavController(), MainActivity(), PaddingValues())
+    AddBetScreen(rememberNavController(), MainActivity())
 }

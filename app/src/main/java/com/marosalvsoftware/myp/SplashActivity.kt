@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.marosalvsoftware.myp.ui.theme.MYPTheme
 import kotlinx.coroutines.delay
 
@@ -30,32 +29,40 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MYPTheme {
-                SplashScreen()
+
+                MySplashScreen()
             }
         }
     }
 
-    @Preview(showBackground = true)
+
     @Composable
-    private fun SplashScreen() {
+    fun MySplashScreen() {
 
-        val alpha = remember{ Animatable(0f) }
+        val alpha = remember { Animatable(0f) }
 
-        LaunchedEffect(key1 = true){
-            alpha.animateTo(1f,
+        LaunchedEffect(key1 = true) {
+            alpha.animateTo(
+                1f,
                 animationSpec = tween(1500)
             )
 
             //Attendere 2 secondi prima di avviare l'activity principale
-                delay(2000)
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            }
+            delay(2000)
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish()
+
+        }
         Box(
-            modifier = Modifier.fillMaxSize().background(brush = MySettings.ColorThemeLight.background),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = MySettings.ColorThemeLight.background),
             contentAlignment = Alignment.Center
         ) {
             Image(
-                modifier = Modifier.fillMaxSize().alpha(alpha = alpha.value),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(alpha = alpha.value),
                 painter = painterResource(
                     id = R.drawable.logo_myp2
                 ),

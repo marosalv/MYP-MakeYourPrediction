@@ -97,7 +97,7 @@ fun LazyGridItemScope.DetailRowCreator(cardFiller: CardFiller) {
         modifier = Modifier
             .padding(top = MySettings.Paddings.medium, end = MySettings.Paddings.medium)
             .fillMaxWidth(0.9f)
-            .size(180.dp),
+            .size(MySettings.Sizes.cardSize_big),
         shape = RoundedCornerShape(MySettings.Paddings.large),
         elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
         colors = CardDefaults.cardColors(containerColor = colorCard)

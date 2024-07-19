@@ -8,8 +8,6 @@ import androidx.compose.ui.unit.dp
 sealed class MySettings {
     data object NavigationBarSettings : MySettings()
     {
-        /**Percentage of the screen*/
-        val heightFloat: Float = 0.10f
         /**Absolute Value*/
         val heightDp: Dp = 90.dp
     }
@@ -31,7 +29,7 @@ sealed class MySettings {
     }
 
     data object DatabasePlaces: MySettings(){
-        val criptos : String = "Criptos"
+        const val CRIPTO : String = "621"
     }
 
     data object Paddings : MySettings(){
@@ -43,6 +41,9 @@ sealed class MySettings {
     data object Sizes : MySettings(){
         val headerBand : Dp = 130.dp
         val iconSizes : Dp = 48.dp
+        val cardSize_little : Dp = 70.dp
+        val cardSize_big : Dp = 180.dp
+
         data object MyTextSizes : MySettings(){
             val small : Dp = 12.dp
             val medium : Dp = 16.dp

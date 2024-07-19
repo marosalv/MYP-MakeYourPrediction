@@ -1,6 +1,5 @@
 package com.marosalvsoftware.myp.navgraph
 
-import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -25,7 +24,7 @@ fun BottomNavGraph(
     ) {
         composable(route=Screen.Home.route){HomeScreen(navController, activity, paddingValues)}
         composable(route=Screen.Settings.route){SettingsScreen(navController, activity, paddingValues)}
-        composable(route=Screen.AddBet.route){AddBetScreen(navController, activity, paddingValues)}
-        composable(route=Screen.History.route){HistoryScreen(navController, activity, paddingValues)}
+        composable(route=Screen.AddBet.route){AddBetScreen(navController, activity)}
+        composable(route=Screen.History.route){HistoryScreen(navController, activity)}
     }
 }

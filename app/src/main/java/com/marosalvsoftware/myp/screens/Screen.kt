@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -37,4 +38,15 @@ sealed class Screen(
         description = "History Screen",
         icon = Icons.AutoMirrored.Filled.List
     )
+    data object Profile: Screen(
+        name = "Profile",
+        route = "profile",
+        description = "Profile Screen",
+        icon = Icons.Default.Settings)
+    data object Splash: Screen(
+        name = "Splash",
+        route = "splash",
+        description = "Splash Screen",
+        icon = Icons.Default.WaterDrop)
+
 }

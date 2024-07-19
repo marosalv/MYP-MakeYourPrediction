@@ -63,7 +63,7 @@ dependencies {
     //implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("androidx.profileinstaller:profileinstaller:1.3.1")
 
-    //implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.gson)
 
     //implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
 
