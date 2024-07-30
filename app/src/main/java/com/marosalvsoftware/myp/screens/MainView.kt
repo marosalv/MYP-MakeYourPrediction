@@ -38,7 +38,6 @@ import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.MySettings
 import com.marosalvsoftware.myp.navgraph.BottomNavGraph
-import org.testng.reporters.jq.Main
 
 @Composable
 fun MainView(activity: MainActivity) {

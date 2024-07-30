@@ -29,8 +29,8 @@ sealed class MySettings {
     }
 
     data object DatabasePlaces: MySettings(){
-        const val CRIPTO : String = "621"
-    }
+        const val CRIPTO : String = "441"
+         }
 
     data object Paddings : MySettings(){
         val small : Dp = 8.dp

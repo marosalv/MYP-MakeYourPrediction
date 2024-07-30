@@ -7,13 +7,13 @@ import com.marosalvsoftware.myp.data.local.saveToDatabase
 import java.time.LocalDate
 
 data class CardFiller(
-    @SerializedName("color") val color: Color,
-    @SerializedName("name") val name: String,
-    @SerializedName("iconID") val iconID: Int,
-    @SerializedName("actualPrice") val actualPrice: String,
-    @SerializedName("ticker") val ticker: String,
-    @SerializedName("voteDateList") var voteDateList: MutableList<String>,
-    @SerializedName("isUptrendList") var isUptrendList: MutableList<Boolean>
+    @SerializedName("color")            val color: Color,
+    @SerializedName("name")             val name: String,
+    @SerializedName("iconID")           val iconID: Int,
+    @SerializedName("actualPrice")      var actualPrice: String,
+    @SerializedName("ticker")           val ticker: String,
+    @SerializedName("voteDateList")     var voteDateList: MutableList<String>,
+    @SerializedName("isUptrendList")    var isUptrendList: MutableList<Boolean>
 ) {
     class GetAllCards {
         fun getList(): List<CardFiller> {
@@ -507,9 +507,12 @@ fun saveCardFiller(activity: MainActivity, cardFiller: CardFiller) {
 }
 
 fun getCardFillerSaved(activity: MainActivity, cardFiller: CardFiller): CardFiller {
-    return readFromDatabase<CardFiller>(
-        activity,
-        MySettings.DatabasePlaces.CRIPTO,
-        cardFiller.ticker
-    ) ?: return cardFiller
+
+    val out = readFromDatabase<CardFiller>(
+    activity,
+    MySettings.DatabasePlaces.CRIPTO,
+    cardFiller.ticker
+    )
+
+    return out ?: cardFiller
 }

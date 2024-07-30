@@ -53,13 +53,7 @@ fun HistoryScreen(
     navController: NavHostController,
     activity: MainActivity
 ) {
-
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val state = rememberLazyListState()
-
-    val updatedList = updatedCardFiller(activity = activity)
-
-
 
     Scaffold(
         modifier = Modifier
@@ -67,6 +61,9 @@ fun HistoryScreen(
         topBar = {
             MyTopBar(Screen.History, scrollBehaviour, activity.baseContext, navController)
         }) { paddingValues ->
+
+        val state = rememberLazyListState()
+        val updatedList = updatedCardFiller(activity = activity)
 
         LazyColumn(
             modifier = Modifier
@@ -95,34 +92,10 @@ fun HistoryScreen(
 @Composable
 fun CreateCardHistory(cardFiller: CardFiller) {
 
-    val colorCard = MySettings.ColorThemeLight.cardBacground
-
     when (cardFiller.voteDateList.size) {
         0 -> return
         1 -> return
-        2 -> {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = MySettings.Paddings.medium),
-                shape = RoundedCornerShape(MySettings.Paddings.large),
-                elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
-                colors = CardDefaults.cardColors(containerColor = colorCard)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(MySettings.Paddings.medium),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = cardFiller.name + " " + cardFiller.voteDateList.last() + " --> " + cardFiller.isUptrendList.last(),
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-        }
+        2 -> NormalCard(title = cardFiller.name, cardFiller = cardFiller)
 
         else -> {
             ExpandableCard(title = cardFiller.name, cardFiller = cardFiller)
@@ -141,11 +114,37 @@ fun PreviewHistoryScreen() {
 }
 
 @Composable
+fun NormalCard(title: String, cardFiller: CardFiller){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = MySettings.Paddings.medium),
+        shape = RoundedCornerShape(MySettings.Paddings.large),
+        elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
+        colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBacground)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(MySettings.Paddings.medium),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = cardFiller.name + " " + cardFiller.voteDateList.last() + " --> " + cardFiller.isUptrendList.last(),
+                textAlign = TextAlign.Center
+            )
+        }
+    }
+}
+
+@Composable
 fun ExpandableCard(title: String, cardFiller: CardFiller) {
     val expanded = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            //.height(if(expanded.value) MySettings.Sizes.cardSize_big else 50.dp)
             .padding(top = MySettings.Paddings.medium),
         shape = RoundedCornerShape(MySettings.Paddings.large),
         elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
@@ -168,7 +167,7 @@ fun ExpandableCard(title: String, cardFiller: CardFiller) {
         }
         if (expanded.value) {
             Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
-                for (i in 1..cardFiller.voteDateList.size) {
+                for (i in 1..<cardFiller.voteDateList.size) {
                     Text(
                         text = cardFiller.voteDateList[i] + " --> " + cardFiller.isUptrendList[i],
                         textAlign = TextAlign.Center

@@ -1,13 +1,13 @@
 package com.marosalvsoftware.myp.screens
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -54,6 +54,7 @@ import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.MySettings
+import com.marosalvsoftware.myp.data.online.getCoinCapResp
 import com.marosalvsoftware.myp.saveCardFiller
 import com.marosalvsoftware.myp.updatedCardFiller
 import java.time.LocalDate
@@ -65,6 +66,24 @@ fun AddBetScreen(
     activity: MainActivity
 ) {
 
+    val state = rememberLazyListState()
+    val updatedList = updatedCardFiller(activity)
+    Thread {
+        val coinCapResp = getCoinCapResp()
+
+        Log.d("TAG", "AddBetScreen: $coinCapResp")
+        if (coinCapResp != null)
+            for (card in updatedList)
+                for (coin in coinCapResp.data)
+                    if (card.ticker == coin.symbol) {
+                        if (coin.priceUsd!!.toDouble() < 1)
+                            card.actualPrice = coin.priceUsd!!.toDouble().toString()
+                        else
+                            card.actualPrice = coin.priceUsd!!.toDouble().toFloat().toString()//String.format("%.2f", coin.priceUsd!!.toDouble())
+                    }
+
+    }.start()
+
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
@@ -72,9 +91,6 @@ fun AddBetScreen(
             MyTopBar(screen = Screen.AddBet, scrollBehaviour, activity.baseContext, navController)
         }) { paddingValues ->
 
-        val state = rememberLazyListState()
-
-        val updatedList = updatedCardFiller(activity = activity)
 
         LazyColumn(
             modifier = Modifier
@@ -91,7 +107,6 @@ fun AddBetScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             items(items = updatedList, itemContent = {
-
                 CardBetCreator(it, activity)
             })
             item {
@@ -296,11 +311,6 @@ fun Context.toast(message: String) {
 
 fun isAlreadyVoted(lastVote: LocalDate): Boolean {
     return LocalDate.now().minusDays(1).isBefore(lastVote)
-}
-
-fun saveVote(activity: MainActivity, cardFiller: CardFiller) {
-
-    saveCardFiller(activity = activity, cardFiller = cardFiller)
 }
 
 @Composable
