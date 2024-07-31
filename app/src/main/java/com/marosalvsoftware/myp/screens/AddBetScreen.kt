@@ -57,7 +57,9 @@ import com.marosalvsoftware.myp.MySettings
 import com.marosalvsoftware.myp.data.online.getCoinCapResp
 import com.marosalvsoftware.myp.saveCardFiller
 import com.marosalvsoftware.myp.updatedCardFiller
+import java.text.Format
 import java.time.LocalDate
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,15 +73,26 @@ fun AddBetScreen(
     Thread {
         val coinCapResp = getCoinCapResp()
 
-        Log.d("TAG", "AddBetScreen: $coinCapResp")
         if (coinCapResp != null)
             for (card in updatedList)
                 for (coin in coinCapResp.data)
                     if (card.ticker == coin.symbol) {
                         if (coin.priceUsd!!.toDouble() < 1)
-                            card.actualPrice = coin.priceUsd!!.toDouble().toString()
+                            if (coin.priceUsd!!.toDouble() < 0.0001)
+                                card.actualPrice = String.format(
+                                    Locale.ENGLISH,
+                                    "%.16f",
+                                    coin.priceUsd!!.toDouble()
+                                )
+                            else
+                                card.actualPrice = String.format(
+                                    Locale.ENGLISH,
+                                    "%.12f",
+                                    coin.priceUsd!!.toDouble()
+                                )
                         else
-                            card.actualPrice = coin.priceUsd!!.toDouble().toFloat().toString()//String.format("%.2f", coin.priceUsd!!.toDouble())
+                            card.actualPrice =
+                                String.format(Locale.ENGLISH, "%.4f", coin.priceUsd!!.toDouble())
                     }
 
     }.start()
@@ -132,55 +145,56 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = MySettings.Paddings.medium)
-                .height(70.dp),
+                .padding(top = MySettings.Paddings.medium),
             shape = RoundedCornerShape(MySettings.Paddings.large),
             elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
-            colors = CardDefaults.cardColors(containerColor = colorCard)
+            colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBacground)
         ) {
             Row(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(MySettings.Paddings.small),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.Left
+                horizontalArrangement = Arrangement.Absolute.SpaceBetween
             ) {
-                Image(
-                    modifier = Modifier
-                        .padding(
-                            start = MySettings.Paddings.medium,
-                            end = MySettings.Paddings.small
-                        )
-                        .size(MySettings.Sizes.iconSizes),
-                    painter = painter,
-                    contentDescription = cardFiller.actualPrice
-                )
-
-                Text(
-                    text = cardFiller.name,
-                    modifier = Modifier.padding(end = MySettings.Paddings.medium),
-                    fontSize = MaterialTheme.typography.headlineSmall.fontSize
-                )
-
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = MySettings.Paddings.medium),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Absolute.Left
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .padding(MySettings.Paddings.small)
+                            .size(MySettings.Sizes.iconSizes),
+                        painter = painter,
+                        contentDescription = cardFiller.actualPrice
+                    )
+
+                    Text(
+                        text = cardFiller.name,
+                        modifier = Modifier.padding(end = MySettings.Paddings.medium),
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                    )
+                }
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Absolute.Right
                 ) {
                     Text(
                         text = cardFiller.actualPrice,
                         modifier = Modifier.padding(end = MySettings.Paddings.medium),
-                        fontSize = MaterialTheme.typography.headlineSmall.fontSize
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize
                     )
 
                     IconButton(
+                        modifier = Modifier
+                            .size(MySettings.Sizes.iconSizes),
                         onClick = {
                             popUpState.value = !popUpState.value
                         }
                     )
                     {
                         Icon(
-                            modifier = Modifier.size(MySettings.Sizes.iconSizes),
+                            modifier = Modifier.fillMaxSize(),
                             contentDescription = "Add New Bet",
                             imageVector = Icons.Outlined.Add,
                             tint = MySettings.ColorThemeLight.secondary
@@ -221,7 +235,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                         text = "Predict " + cardFiller.name,
                         fontWeight = FontWeight.Bold
                     )
@@ -235,7 +249,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                     //Body
                     Text(
                         textAlign = TextAlign.Justify,
-                        fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                        fontSize = MaterialTheme.typography.bodyLarge.fontSize,
                         text = "Vote your market prediction" +
                                 "\n -- Actual value: ${cardFiller.actualPrice}" +
                                 "\n -- Till Date: ${fromTodayDate(15)}"

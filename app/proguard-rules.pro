@@ -26,6 +26,8 @@
 #-keep class * implements com.google.gson.TypeAdapterFactory
 #-keep class * implements com.google.gson.JsonSerializer
 #-keep class * implements com.google.gson.JsonDeserializer
+
+#Userd for Gson SerializedName fields not recognised after R8 (Abstract class found)
 # Prevent R8 from leaving Data object members always null
 -keepclasseswithmembers class * {
     <init>(...);
