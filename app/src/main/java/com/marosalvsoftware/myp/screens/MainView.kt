@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
@@ -36,7 +35,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.MySettings
+import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.navgraph.BottomNavGraph
 
 @Composable

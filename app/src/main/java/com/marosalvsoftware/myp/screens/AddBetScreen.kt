@@ -1,7 +1,6 @@
 package com.marosalvsoftware.myp.screens
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,18 +44,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.MySettings
+import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.data.online.getCoinCapResp
 import com.marosalvsoftware.myp.saveCardFiller
 import com.marosalvsoftware.myp.updatedCardFiller
-import java.text.Format
 import java.time.LocalDate
 import java.util.Locale
 

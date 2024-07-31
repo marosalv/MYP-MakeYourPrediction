@@ -40,7 +40,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.MySettings
+import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.updatedCardFiller
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

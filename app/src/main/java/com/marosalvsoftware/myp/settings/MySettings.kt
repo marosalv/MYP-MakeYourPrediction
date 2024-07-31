@@ -1,4 +1,4 @@
-package com.marosalvsoftware.myp
+package com.marosalvsoftware.myp.settings
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color

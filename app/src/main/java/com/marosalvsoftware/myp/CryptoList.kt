@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import com.google.gson.annotations.SerializedName
 import com.marosalvsoftware.myp.data.local.readFromDatabase
 import com.marosalvsoftware.myp.data.local.saveToDatabase
+import com.marosalvsoftware.myp.settings.MySettings
 import java.time.LocalDate
 
 data class CardFiller(
