@@ -37,9 +37,11 @@ import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.navgraph.BottomNavGraph
+import com.marosalvsoftware.myp.navgraph.RootNavGraph
 
 @Composable
 fun MainView(activity: MainActivity) {
+
     val navController = rememberNavController()
 
     Scaffold(
@@ -47,9 +49,8 @@ fun MainView(activity: MainActivity) {
         bottomBar = { MyBottomBar(modifier = Modifier, navController = navController) })
     { innerPadding ->
         innerPadding.calculateBottomPadding()
-        BottomNavGraph(
+        RootNavGraph(
             navController = navController,
-            paddingValues = innerPadding,
             activity = activity
         )
     }
@@ -76,8 +77,11 @@ fun MyTopBar(
         },
         navigationIcon = {
             IconButton(onClick = {
-                navController.popBackStack()
-                navController.navigate(Screen.Home.route)
+                navController.navigate(Screen.Home.route){
+                    popUpTo("main"){
+                        inclusive = true
+                    }
+                }
             }) {
                 Image(
                     modifier = Modifier.size(MySettings.Sizes.iconSizes),
@@ -148,8 +152,11 @@ fun RowScope.AddItem(
             it.route == screen.route
         } == true,
         onClick = {
-            if (currentDestination?.route != Screen.Home.route) navController.popBackStack()
-            navController.navigate(screen.route)
+            navController.navigate(screen.route){
+                popUpTo("main"){
+                    inclusive = true
+                }
+            }
         },
         icon = { Icon(imageVector = screen.icon, contentDescription = screen.description) },
         colors = NavigationBarItemColors

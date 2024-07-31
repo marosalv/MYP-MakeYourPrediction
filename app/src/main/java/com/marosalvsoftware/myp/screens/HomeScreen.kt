@@ -50,7 +50,7 @@ import com.marosalvsoftware.myp.settings.MySettings
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavHostController, activity: MainActivity, paddings: PaddingValues) {
+fun HomeScreen(navController: NavHostController, activity: MainActivity) {
 
     val scrollState = rememberLazyGridState()
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
@@ -184,10 +184,4 @@ fun LazyGridItemScope.DetailRowCreator(cardFiller: CardFiller) {
             }
         }
     }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewHomeScreen() {
-    HomeScreen(rememberNavController(), MainActivity(), PaddingValues())
 }

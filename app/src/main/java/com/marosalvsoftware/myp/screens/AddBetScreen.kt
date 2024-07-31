@@ -18,19 +18,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
 import androidx.compose.material.icons.outlined.Add
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -43,11 +43,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.settings.MySettings
@@ -57,7 +55,7 @@ import com.marosalvsoftware.myp.updatedCardFiller
 import java.time.LocalDate
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AddBetScreen(
     navController: NavHostController,
@@ -75,20 +73,11 @@ fun AddBetScreen(
                     if (card.ticker == coin.symbol) {
                         if (coin.priceUsd!!.toDouble() < 1)
                             if (coin.priceUsd!!.toDouble() < 0.0001)
-                                card.actualPrice = String.format(
-                                    Locale.ENGLISH,
-                                    "%.16f",
-                                    coin.priceUsd!!.toDouble()
-                                )
+                                card.actualPrice = String.format(Locale.ENGLISH,"%.16f",coin.priceUsd!!.toDouble())
                             else
-                                card.actualPrice = String.format(
-                                    Locale.ENGLISH,
-                                    "%.12f",
-                                    coin.priceUsd!!.toDouble()
-                                )
+                                card.actualPrice = String.format(Locale.ENGLISH,"%.12f",coin.priceUsd!!.toDouble())
                         else
-                            card.actualPrice =
-                                String.format(Locale.ENGLISH, "%.4f", coin.priceUsd!!.toDouble())
+                            card.actualPrice = String.format(Locale.ENGLISH,"%.4f", coin.priceUsd!!.toDouble())
                     }
 
     }.start()
@@ -143,12 +132,12 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                 .fillMaxWidth()
                 .padding(top = MySettings.Paddings.medium),
             shape = RoundedCornerShape(MySettings.Paddings.large),
-            elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
+            elevation = CardDefaults.cardElevation(MySettings.Paddings.small),
             colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBacground)
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(MySettings.Paddings.small),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Absolute.SpaceBetween
@@ -321,10 +310,4 @@ fun Context.toast(message: String) {
 
 fun isAlreadyVoted(lastVote: LocalDate): Boolean {
     return LocalDate.now().minusDays(1).isBefore(lastVote)
-}
-
-@Composable
-@Preview(showBackground = true)
-fun PreviewAddBetScreen() {
-    AddBetScreen(rememberNavController(), MainActivity())
 }

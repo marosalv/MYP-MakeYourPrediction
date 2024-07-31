@@ -30,7 +30,6 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MYPTheme {
-
                 MySplashScreen()
             }
         }
@@ -49,7 +48,7 @@ class SplashActivity : ComponentActivity() {
             )
 
             //Attendere 2 secondi prima di avviare l'activity principale
-            delay(2000)
+            delay(1000)
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
 
