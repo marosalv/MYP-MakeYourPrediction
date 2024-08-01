@@ -9,11 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.screens.AddBetScreen
-import com.marosalvsoftware.myp.screens.HistoryScreen
-import com.marosalvsoftware.myp.screens.HomeScreen
+import com.marosalvsoftware.myp.screens.main.AddBetScreen
+import com.marosalvsoftware.myp.screens.main.HistoryScreen
+import com.marosalvsoftware.myp.screens.main.HomeScreen
 import com.marosalvsoftware.myp.screens.Screen
-import com.marosalvsoftware.myp.screens.SettingsScreen
+import com.marosalvsoftware.myp.screens.main.SettingsScreen
 
 /**
  * Unused for now. Might be useful in the future to nest the navGraphs.
@@ -33,9 +33,9 @@ fun BottomNavGraph(
         exitTransition = {
             fadeOut(animationSpec = tween(100))
         }) {
-        composable(route=Screen.Home.route){HomeScreen(navController, activity)}
-        composable(route=Screen.Settings.route){SettingsScreen(navController, activity)}
-        composable(route=Screen.AddBet.route){AddBetScreen(navController, activity)}
-        composable(route=Screen.History.route){HistoryScreen(navController, activity)}
+        composable(route=Screen.Home.route){ HomeScreen(navController, activity) }
+        composable(route=Screen.Settings.route){ SettingsScreen(navController, activity) }
+        composable(route=Screen.AddBet.route){ AddBetScreen(navController, activity) }
+        composable(route=Screen.History.route){ HistoryScreen(navController, activity) }
     }
 }

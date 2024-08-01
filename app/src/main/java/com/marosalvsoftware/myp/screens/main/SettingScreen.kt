@@ -1,9 +1,8 @@
-package com.marosalvsoftware.myp.screens
+package com.marosalvsoftware.myp.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.screens.MyTopBar
+import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.DefaultListSettings
 import com.marosalvsoftware.myp.settings.MySettings
 

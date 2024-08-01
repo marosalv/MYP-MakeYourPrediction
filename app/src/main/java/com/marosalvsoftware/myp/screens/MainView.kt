@@ -35,9 +35,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.data.online.isUsedAuthenticated
 import com.marosalvsoftware.myp.settings.MySettings
-import com.marosalvsoftware.myp.navgraph.BottomNavGraph
+import com.marosalvsoftware.myp.navgraph.MAIN_ROUTE
 import com.marosalvsoftware.myp.navgraph.RootNavGraph
+import com.marosalvsoftware.myp.screens.main.toast
 
 @Composable
 fun MainView(activity: MainActivity) {
@@ -46,7 +48,7 @@ fun MainView(activity: MainActivity) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { MyBottomBar(modifier = Modifier, navController = navController) })
+        bottomBar = { if(isUsedAuthenticated()) MyBottomBar(modifier = Modifier, navController = navController) })
     { innerPadding ->
         innerPadding.calculateBottomPadding()
         RootNavGraph(
@@ -54,6 +56,7 @@ fun MainView(activity: MainActivity) {
             activity = activity
         )
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,7 +81,7 @@ fun MyTopBar(
         navigationIcon = {
             IconButton(onClick = {
                 navController.navigate(Screen.Home.route){
-                    popUpTo("main"){
+                    popUpTo(MAIN_ROUTE){
                         inclusive = true
                     }
                 }
@@ -153,7 +156,7 @@ fun RowScope.AddItem(
         } == true,
         onClick = {
             navController.navigate(screen.route){
-                popUpTo("main"){
+                popUpTo(MAIN_ROUTE){
                     inclusive = true
                 }
             }

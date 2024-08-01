@@ -9,11 +9,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.screens.AddBetScreen
-import com.marosalvsoftware.myp.screens.HistoryScreen
-import com.marosalvsoftware.myp.screens.HomeScreen
+import com.marosalvsoftware.myp.data.online.isUsedAuthenticated
+import com.marosalvsoftware.myp.screens.main.AddBetScreen
+import com.marosalvsoftware.myp.screens.main.HistoryScreen
+import com.marosalvsoftware.myp.screens.main.HomeScreen
 import com.marosalvsoftware.myp.screens.Screen
-import com.marosalvsoftware.myp.screens.SettingsScreen
+import com.marosalvsoftware.myp.screens.main.SettingsScreen
+import com.marosalvsoftware.myp.screens.auth.ForgotScreen
+import com.marosalvsoftware.myp.screens.auth.LoginScreen
+import com.marosalvsoftware.myp.screens.auth.RegisterScreen
 
 @Composable
 fun RootNavGraph(
@@ -28,10 +32,10 @@ fun RootNavGraph(
         exitTransition = {
             fadeOut(animationSpec = tween(100))
         }) {
-        navigation(startDestination = Screen.Home.route, route = "root") {
+        navigation(startDestination = Screen.Home.route, route = ROOT_ROUTE) {
             composable(route = Screen.Home.route) {
-                if(false) { //TODO check if user is logged in on splashScreen during the loading screen
-                    navController.navigate("auth")
+                if(!isUsedAuthenticated()) { //TODO check if user is logged in on splashScreen during the loading screen
+                    LoginScreen(navController = navController)
                 }
                 else {
                     HomeScreen(navController, activity)
@@ -39,17 +43,21 @@ fun RootNavGraph(
             }
         }
 
-        navigation(startDestination = Screen.Home.route, route = "main") {
-            composable(route = Screen.Home.route) { HomeScreen(navController, activity) }
-            composable(route = Screen.Settings.route) { SettingsScreen(navController, activity) }
-            composable(route = Screen.AddBet.route) { AddBetScreen(navController, activity) }
-            composable(route = Screen.History.route) { HistoryScreen(navController, activity) }
+        navigation(startDestination = Screen.Home.route, route = MAIN_ROUTE) {
+            composable(route = Screen.Home.route) {         HomeScreen(navController, activity) }
+            composable(route = Screen.Settings.route) {     SettingsScreen(navController, activity) }
+            composable(route = Screen.AddBet.route) {       AddBetScreen(navController, activity) }
+            composable(route = Screen.History.route) {      HistoryScreen(navController, activity) }
         }
 
-        navigation(startDestination = "login", route = "auth") {
-            composable(route = "login") {}//TODO add login screen
-            composable(route = "register") {}//TODO add register screen
-            composable(route = "forgot") {}//TODO add forgot screen
+        navigation(startDestination = "login", route = AUTH_ROUTE) {
+            composable(route = Screen.Login.route) {        LoginScreen(navController = navController)}//TODO add login screen
+            composable(route = Screen.Register.route) {     RegisterScreen(navController = navController)}//TODO add register screen
+            composable(route = Screen.Forgot.route) {       ForgotScreen(navController = navController)}//TODO add forgot screen
         }
     }
 }
+
+const val MAIN_ROUTE : String = "main"
+const val ROOT_ROUTE : String = "root"
+const val AUTH_ROUTE : String = "auth"

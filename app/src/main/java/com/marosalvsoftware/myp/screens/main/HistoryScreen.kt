@@ -1,4 +1,4 @@
-package com.marosalvsoftware.myp.screens
+package com.marosalvsoftware.myp.screens.main
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -40,6 +40,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.screens.MyTopBar
+import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.updatedCardFiller
 

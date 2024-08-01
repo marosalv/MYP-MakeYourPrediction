@@ -1,4 +1,4 @@
-package com.marosalvsoftware.myp.screens
+package com.marosalvsoftware.myp.screens.main
 
 import android.content.Context
 import android.widget.Toast
@@ -43,14 +43,18 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.data.online.getCoinCapResp
 import com.marosalvsoftware.myp.saveCardFiller
+import com.marosalvsoftware.myp.screens.MyTopBar
+import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.updatedCardFiller
 import java.time.LocalDate
 import java.util.Locale
@@ -310,4 +314,11 @@ fun Context.toast(message: String) {
 
 fun isAlreadyVoted(lastVote: LocalDate): Boolean {
     return LocalDate.now().minusDays(1).isBefore(lastVote)
+}
+
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewAddBetScreen(){
+    AddBetScreen(navController = rememberNavController(), activity = MainActivity())
 }
