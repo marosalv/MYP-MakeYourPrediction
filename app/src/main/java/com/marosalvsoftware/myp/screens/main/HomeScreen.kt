@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.getListCardFiller
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.MySettings
@@ -53,7 +54,7 @@ fun HomeScreen(navController: NavHostController, activity: MainActivity) {
 
     val scrollState = rememberLazyGridState()
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    val cardFiller = CardFiller.GetAllCards().getList()
+    val cardFiller = getListCardFiller()
 
 
     Scaffold(
@@ -89,7 +90,7 @@ fun HomeScreen(navController: NavHostController, activity: MainActivity) {
 fun LazyGridItemScope.DetailRowCreator(cardFiller: CardFiller) {
 
     val painter: Painter = painterResource(id = cardFiller.iconID)
-    val colorCard = MySettings.ColorThemeLight.cardBacground
+    val colorCard = MySettings.ColorThemeLight.cardBackground
     Card(
         modifier = Modifier
             .padding(top = MySettings.Paddings.medium, end = MySettings.Paddings.medium)

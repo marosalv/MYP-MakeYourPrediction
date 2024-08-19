@@ -75,7 +75,7 @@ fun CardCreator(size: SizeSelector, composable: @Composable () -> Unit) {
             .sizeCase(size),
         shape = RoundedCornerShape(MySettings.Paddings.large),
         elevation = MySettings.Paddings.small,
-        backgroundColor = MySettings.ColorThemeLight.cardBacground
+        backgroundColor = MySettings.ColorThemeLight.cardBackground
     ) {
         Row(
             modifier = Modifier

@@ -56,6 +56,7 @@ import com.marosalvsoftware.myp.saveCardFiller
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.updatedCardFiller
+import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 import java.util.Locale
 
@@ -67,12 +68,21 @@ fun AddBetScreen(
 ) {
 
     val state = rememberLazyListState()
-    val updatedList = updatedCardFiller(activity)
+    val updatedList = MutableStateFlow(updatedCardFiller(activity))
+
+
+            /** Fa arrivare i prezzi dal server CoinCap per aggiornare il prezzo giornaliero
+     * viene eseguito su un thread secondario   */
+
+
+    /** Fa arrivare i prezzi dal server CoinCap per aggiornare il prezzo giornaliero
+     * viene eseguito su un thread secondario   */
+
     Thread {
         val coinCapResp = getCoinCapResp()
 
         if (coinCapResp != null)
-            for (card in updatedList)
+            for (card in updatedList.value)
                 for (coin in coinCapResp.data)
                     if (card.ticker == coin.symbol) {
                         if (coin.priceUsd!!.toDouble() < 1)
@@ -93,7 +103,6 @@ fun AddBetScreen(
             MyTopBar(screen = Screen.AddBet, scrollBehaviour, activity.baseContext, navController)
         }) { paddingValues ->
 
-
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -108,7 +117,7 @@ fun AddBetScreen(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(items = updatedList, itemContent = {
+            items(items = updatedList.value, itemContent = {
                 CardBetCreator(it, activity)
             })
             item {
@@ -124,7 +133,7 @@ fun AddBetScreen(
 fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
 
     val painter: Painter = painterResource(id = cardFiller.iconID)
-    val colorCard = MySettings.ColorThemeLight.cardBacground
+    val colorCard = MySettings.ColorThemeLight.cardBackground
     val popUpState = remember { mutableStateOf(false) }
 
     val lastVote = remember {
@@ -137,7 +146,7 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
                 .padding(top = MySettings.Paddings.medium),
             shape = RoundedCornerShape(MySettings.Paddings.large),
             elevation = CardDefaults.cardElevation(MySettings.Paddings.small),
-            colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBacground)
+            colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBackground)
         ) {
             Row(
                 modifier = Modifier

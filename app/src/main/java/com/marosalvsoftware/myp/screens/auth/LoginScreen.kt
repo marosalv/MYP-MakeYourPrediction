@@ -17,15 +17,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.marosalvsoftware.myp.data.online.AuthenticationUser
+import com.marosalvsoftware.firebase_signin.online.firebase.FirebaseManager
+import com.marosalvsoftware.firebase_signin.online.google.GoogleSignInButton
 import com.marosalvsoftware.myp.navgraph.AUTH_ROUTE
 import com.marosalvsoftware.myp.navgraph.MAIN_ROUTE
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.MySettings
+import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(
+    navController: NavHostController,
+    openAndPopUp: (String, String) -> Unit ) {
     //TODO add graphics to log in with Google API, Facebook API, Email
 
     Column(
@@ -53,7 +58,6 @@ fun LoginScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.size(MySettings.Sizes.headerBand))
                 Button(
                     onClick = {
-                        AuthenticationUser(successLogin = true)
                         navController.navigate(MAIN_ROUTE) {
                             popUpTo(AUTH_ROUTE) {
                                 inclusive = true
@@ -61,6 +65,11 @@ fun LoginScreen(navController: NavHostController) {
                         }
                     }) {
                     Text(text = "Navigate to Main Graph\nAuth completed test")
+                }
+                GoogleSignInButton { credential ->
+                    FirebaseManager().viewModelScope.launch {
+                        FirebaseManager().onCompletedGoogleLogin(credential) {}
+                    }
                 }
                 Spacer(modifier = Modifier.size(MySettings.Paddings.small))
                 Row {

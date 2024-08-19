@@ -23,13 +23,13 @@ sealed class MySettings {
         val text : Color = Color(0xFF1F1D22)
         val downTrend : Color = Color(0xFFB61B29)
         val upTrend : Color = Color(0xFF03C77C)
-        val cardBacground : Color = Color(0xFFB4DEFF)
+        val cardBackground : Color = Color(0xFFB4DEFF)
 
 
     }
 
     data object DatabasePlaces: MySettings(){
-        const val CRIPTO : String = "441"
+        const val CRYPTO : String = "856"
          }
 
     data object Paddings : MySettings(){
@@ -51,3 +51,5 @@ sealed class MySettings {
         }
     }
 }
+
+const val GOOGLE_CLIENT_ID = "161813523444-g3irnq1ro26ltgqqelbpogc0eo0397h2.apps.googleusercontent.com"

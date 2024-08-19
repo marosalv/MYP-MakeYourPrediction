@@ -8,8 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.marosalvsoftware.firebase_signin.online.firebase.FirebaseManager
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.data.online.isUsedAuthenticated
 import com.marosalvsoftware.myp.screens.main.AddBetScreen
 import com.marosalvsoftware.myp.screens.main.HistoryScreen
 import com.marosalvsoftware.myp.screens.main.HomeScreen
@@ -32,10 +32,11 @@ fun RootNavGraph(
         exitTransition = {
             fadeOut(animationSpec = tween(100))
         }) {
+
         navigation(startDestination = Screen.Home.route, route = ROOT_ROUTE) {
             composable(route = Screen.Home.route) {
-                if(!isUsedAuthenticated()) { //TODO check if user is logged in on splashScreen during the loading screen
-                    LoginScreen(navController = navController)
+                if(!FirebaseManager().isUserSignedIn()) { //TODO check if user is logged in on splashScreen during the loading screen
+                    LoginScreen(navController = navController, openAndPopUp = { _, _ -> })
                 }
                 else {
                     HomeScreen(navController, activity)
@@ -51,7 +52,7 @@ fun RootNavGraph(
         }
 
         navigation(startDestination = "login", route = AUTH_ROUTE) {
-            composable(route = Screen.Login.route) {        LoginScreen(navController = navController)}//TODO add login screen
+            composable(route = Screen.Login.route) {        LoginScreen(navController = navController, openAndPopUp = { _, _ -> })}//TODO add login screen
             composable(route = Screen.Register.route) {     RegisterScreen(navController = navController)}//TODO add register screen
             composable(route = Screen.Forgot.route) {       ForgotScreen(navController = navController)}//TODO add forgot screen
         }

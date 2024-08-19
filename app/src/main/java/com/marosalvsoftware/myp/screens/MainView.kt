@@ -34,8 +34,8 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.marosalvsoftware.firebase_signin.online.firebase.FirebaseManager
 import com.marosalvsoftware.myp.MainActivity
-import com.marosalvsoftware.myp.data.online.isUsedAuthenticated
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.navgraph.MAIN_ROUTE
 import com.marosalvsoftware.myp.navgraph.RootNavGraph
@@ -48,7 +48,7 @@ fun MainView(activity: MainActivity) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = { if(isUsedAuthenticated()) MyBottomBar(modifier = Modifier, navController = navController) })
+        bottomBar = { if(FirebaseManager().isUserSignedIn()) MyBottomBar(modifier = Modifier, navController = navController) })
     { innerPadding ->
         innerPadding.calculateBottomPadding()
         RootNavGraph(

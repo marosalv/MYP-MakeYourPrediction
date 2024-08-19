@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
+import com.marosalvsoftware.firebase_signin.online.firebase.FirebaseManager
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.ui.theme.MYPTheme
 import kotlinx.coroutines.delay
@@ -30,6 +31,9 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MYPTheme {
+                FirebaseManager().initializeFirebase(this)
+
+
                 MySplashScreen()
             }
         }
@@ -49,8 +53,13 @@ class SplashActivity : ComponentActivity() {
 
             //Attendere 2 secondi prima di avviare l'activity principale
             delay(1000)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            finish()
+            if(!FirebaseManager().isUserSignedIn()) {
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
+            }
+            else{
+
+            }
 
         }
         Box(

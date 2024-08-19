@@ -30,13 +30,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
@@ -102,25 +101,15 @@ fun CreateCardHistory(cardFiller: CardFiller) {
 }
 
 @Composable
-@Preview(showBackground = true)
-fun PreviewHistoryScreen() {
-    HistoryScreen(
-        navController = NavHostController(MainActivity()),
-        activity = MainActivity()
-    )
-}
-
-
-@Composable
 fun ExpandableCard(cardFiller: CardFiller) {
-    val expanded = remember { mutableStateOf(false) }
+    val isExpanded = rememberSaveable { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = MySettings.Paddings.medium),
         shape = RoundedCornerShape(MySettings.Paddings.large),
         elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
-        colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBacground)
+        colors = CardDefaults.cardColors(containerColor = MySettings.ColorThemeLight.cardBackground)
     ) {
         Row(
             modifier = Modifier
@@ -149,7 +138,7 @@ fun ExpandableCard(cardFiller: CardFiller) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(text = cardFiller.name, fontSize = MaterialTheme.typography.h6.fontSize)
-                    if (expanded.value) {
+                    if (isExpanded.value) {
                         for (i in 1..<cardFiller.voteDateList.size) {
                             Text(
                                 text = cardFiller.voteDateList[i] + " --> " + cardFiller.isUptrendList[i],
@@ -172,11 +161,11 @@ fun ExpandableCard(cardFiller: CardFiller) {
                 */
                 IconButton(modifier = Modifier
                     .size(MySettings.Sizes.iconSizes),
-                    onClick = { expanded.value = !expanded.value }) {
+                    onClick = { isExpanded.value = !isExpanded.value }) {
                     Image(
                         modifier = Modifier.fillMaxSize(),
                         imageVector =
-                        if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                        if (isExpanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                         contentDescription = null
                     )
                 }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "161813523444",
+    "project_id": "makeyourpredict",
+    "storage_bucket": "makeyourpredict.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:161813523444:android:711ba79f1b09400fdce7a1",
+        "android_client_info": {
+          "package_name": "com.marosalvsoftware.myp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "161813523444-g3irnq1ro26ltgqqelbpogc0eo0397h2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaAYlsvagAZmzGd-g3ALdJFuxgGhobssE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "161813523444-g3irnq1ro26ltgqqelbpogc0eo0397h2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

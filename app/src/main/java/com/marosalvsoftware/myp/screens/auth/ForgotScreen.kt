@@ -17,8 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import com.marosalvsoftware.myp.data.online.AuthenticationUser
+import androidx.navigation.compose.rememberNavController
 import com.marosalvsoftware.myp.navgraph.AUTH_ROUTE
 import com.marosalvsoftware.myp.navgraph.MAIN_ROUTE
 import com.marosalvsoftware.myp.screens.Screen
@@ -53,7 +54,6 @@ fun ForgotScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.size(MySettings.Sizes.headerBand))
                 Button(
                     onClick = {
-                        AuthenticationUser(successLogin = true)
                         navController.navigate(MAIN_ROUTE) {
                             popUpTo(AUTH_ROUTE) {
                                 inclusive = true
@@ -93,4 +93,10 @@ fun ForgotScreen(navController: NavHostController) {
         }
     }
 
+}
+
+@Composable
+@Preview(showBackground = true)
+fun PreviewForgotScreen() {
+    ForgotScreen(navController = rememberNavController())
 }
