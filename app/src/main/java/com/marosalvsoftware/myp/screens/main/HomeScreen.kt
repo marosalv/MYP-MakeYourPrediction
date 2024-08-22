@@ -44,6 +44,7 @@ import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.getListCardFiller
+import com.marosalvsoftware.myp.screens.MyBottomBar
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.MySettings
@@ -58,22 +59,21 @@ fun HomeScreen(navController: NavHostController, activity: MainActivity) {
 
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
-        topBar = {
-            MyTopBar(Screen.Home, scrollBehaviour, activity.baseContext, navController)
-        }) { paddingValues ->
+        modifier = Modifier.fillMaxSize().nestedScroll(scrollBehaviour.nestedScrollConnection),
+        bottomBar = { MyBottomBar(navController = navController) },
+        topBar = { MyTopBar(Screen.Home, scrollBehaviour, activity.baseContext, navController) }
+    ) {itt ->
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
-                .padding(paddingValues)
+                .fillMaxSize()
                 .background(brush = MySettings.ColorThemeLight.background)
                 .padding(
-                    bottom = MySettings.NavigationBarSettings.heightDp,
-                    start = MySettings.Paddings.medium
-                )
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
+                    start = MySettings.Paddings.medium, 
+                    top = itt.calculateTopPadding(),
+                    bottom = itt.calculateBottomPadding()),
+            horizontalArrangement = Arrangement.Center,
             state = scrollState
         ) {
             items(cardFiller) {
@@ -87,15 +87,14 @@ fun HomeScreen(navController: NavHostController, activity: MainActivity) {
 }
 
 @Composable
-fun LazyGridItemScope.DetailRowCreator(cardFiller: CardFiller) {
+fun DetailRowCreator(cardFiller: CardFiller) {
 
     val painter: Painter = painterResource(id = cardFiller.iconID)
     val colorCard = MySettings.ColorThemeLight.cardBackground
     Card(
         modifier = Modifier
             .padding(top = MySettings.Paddings.medium, end = MySettings.Paddings.medium)
-            .fillMaxWidth(0.9f)
-            .size(MySettings.Sizes.cardSize_big),
+            .height(MySettings.Sizes.cardSize_big),
         shape = RoundedCornerShape(MySettings.Paddings.large),
         elevation = CardDefaults.elevatedCardElevation(MySettings.Paddings.small),
         colors = CardDefaults.cardColors(containerColor = colorCard)

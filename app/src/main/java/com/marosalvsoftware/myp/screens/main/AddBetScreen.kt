@@ -53,6 +53,7 @@ import com.marosalvsoftware.myp.MainActivity
 import com.marosalvsoftware.myp.settings.MySettings
 import com.marosalvsoftware.myp.data.online.getCoinCapResp
 import com.marosalvsoftware.myp.saveCardFiller
+import com.marosalvsoftware.myp.screens.MyBottomBar
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.updatedCardFiller
@@ -69,11 +70,6 @@ fun AddBetScreen(
 
     val state = rememberLazyListState()
     val updatedList = MutableStateFlow(updatedCardFiller(activity))
-
-
-            /** Fa arrivare i prezzi dal server CoinCap per aggiornare il prezzo giornaliero
-     * viene eseguito su un thread secondario   */
-
 
     /** Fa arrivare i prezzi dal server CoinCap per aggiornare il prezzo giornaliero
      * viene eseguito su un thread secondario   */
@@ -98,21 +94,16 @@ fun AddBetScreen(
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection),
-        topBar = {
-            MyTopBar(screen = Screen.AddBet, scrollBehaviour, activity.baseContext, navController)
-        }) { paddingValues ->
+        modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection).fillMaxSize(),
+        bottomBar = { MyBottomBar(navController = navController) },
+        topBar = { MyTopBar(screen = Screen.AddBet, scrollBehaviour, activity.baseContext, navController)}
+        ) {itt->
 
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .background(brush = MySettings.ColorThemeLight.background)
-                .padding(paddingValues)
-                .padding(
-                    start = MySettings.Paddings.medium,
-                    end = MySettings.Paddings.medium,
-                    bottom = MySettings.NavigationBarSettings.heightDp
-                ),
+                .padding(itt),
             state = state,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -206,12 +197,11 @@ fun CardBetCreator(cardFiller: CardFiller, activity: MainActivity) {
     }
     if (popUpState.value) {
         Popup(
+            alignment = Alignment.Center,
             properties = PopupProperties(focusable = true, dismissOnBackPress = true)
         ) {
             Card(
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .fillMaxHeight(0.9f),
+                modifier = Modifier.fillMaxSize(),
                 shape = RoundedCornerShape(MySettings.Paddings.large),
                 colors = CardDefaults.cardColors(containerColor = colorCard),
                 elevation = CardDefaults.cardElevation(MySettings.Paddings.large)

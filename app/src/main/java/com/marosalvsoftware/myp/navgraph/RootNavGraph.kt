@@ -35,8 +35,8 @@ fun RootNavGraph(
 
         navigation(startDestination = Screen.Home.route, route = ROOT_ROUTE) {
             composable(route = Screen.Home.route) {
-                if(!FirebaseManager().isUserSignedIn()) { //TODO check if user is logged in on splashScreen during the loading screen
-                    LoginScreen(navController = navController, openAndPopUp = { _, _ -> })
+                if(!FirebaseManager().isUserSignedIn()) {
+                    LoginScreen(navController = navController)
                 }
                 else {
                     HomeScreen(navController, activity)
@@ -51,8 +51,8 @@ fun RootNavGraph(
             composable(route = Screen.History.route) {      HistoryScreen(navController, activity) }
         }
 
-        navigation(startDestination = "login", route = AUTH_ROUTE) {
-            composable(route = Screen.Login.route) {        LoginScreen(navController = navController, openAndPopUp = { _, _ -> })}//TODO add login screen
+        navigation(startDestination = Screen.Login.route, route = AUTH_ROUTE) {
+            composable(route = Screen.Login.route) {        LoginScreen(navController = navController)}//TODO add login screen
             composable(route = Screen.Register.route) {     RegisterScreen(navController = navController)}//TODO add register screen
             composable(route = Screen.Forgot.route) {       ForgotScreen(navController = navController)}//TODO add forgot screen
         }

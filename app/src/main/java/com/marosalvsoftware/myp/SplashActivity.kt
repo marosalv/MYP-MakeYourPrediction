@@ -53,14 +53,9 @@ class SplashActivity : ComponentActivity() {
 
             //Attendere 2 secondi prima di avviare l'activity principale
             delay(1000)
-            if(!FirebaseManager().isUserSignedIn()) {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
-            }
-            else{
 
-            }
-
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            finish()
         }
         Box(
             modifier = Modifier

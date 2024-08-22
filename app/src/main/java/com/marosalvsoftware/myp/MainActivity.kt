@@ -9,17 +9,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.marosalvsoftware.myp.screens.MainView
 
 open class MainActivity : ComponentActivity() {
-    internal var authListener: FirebaseAuth.AuthStateListener? =
-        FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
-            if (user == null) {
-                startActivity(Intent(this, SplashScreen::class.java))
-                finish()
-            } else {
-                startActivity((Intent(this, MainActivity::class.java)))
-                finish()
-            }
-        }
+//    internal var authListener: FirebaseAuth.AuthStateListener? =
+//        FirebaseAuth.AuthStateListener { firebaseAuth ->
+//            val user = firebaseAuth.currentUser
+//            if (user == null) {
+//                startActivity(Intent(this, SplashScreen::class.java))
+//                finish()
+//            } else {
+//                startActivity(Intent(this, MainActivity::class.java))
+//                finish()
+//            }
+//        }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

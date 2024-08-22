@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -46,16 +48,11 @@ fun MainView(activity: MainActivity) {
 
     val navController = rememberNavController()
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = { if(FirebaseManager().isUserSignedIn()) MyBottomBar(modifier = Modifier, navController = navController) })
-    { innerPadding ->
-        innerPadding.calculateBottomPadding()
-        RootNavGraph(
-            navController = navController,
-            activity = activity
-        )
-    }
+    RootNavGraph(
+        navController = navController,
+        activity = activity
+    )
+
 
 }
 
@@ -80,8 +77,8 @@ fun MyTopBar(
         },
         navigationIcon = {
             IconButton(onClick = {
-                navController.navigate(Screen.Home.route){
-                    popUpTo(MAIN_ROUTE){
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(MAIN_ROUTE) {
                         inclusive = true
                     }
                 }
@@ -95,12 +92,21 @@ fun MyTopBar(
         },
         actions = {
             IconButton(onClick = {
-                /*TODO*/
-                context.toast("Non ancora implementato, aprirà la tendina per ulteriori impostazioni")
+                FirebaseManager().signOut()
+                {
+                    context.toast("User Logged Out")
+
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(MAIN_ROUTE) {
+                            inclusive = true
+                        }
+                    }
+                }
+
             }) {
                 Image(
                     modifier = Modifier.size(MySettings.Sizes.iconSizes),
-                    imageVector = Icons.Filled.Menu,
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
                     contentDescription = screen.description
                 )
             }
@@ -116,7 +122,7 @@ fun MyTopBar(
 }
 
 @Composable
-fun MyBottomBar(modifier: Modifier, navController: NavHostController) {
+fun MyBottomBar(navController: NavHostController) {
     val screens = listOf(
         Screen.Home,
         Screen.AddBet,
@@ -128,7 +134,7 @@ fun MyBottomBar(modifier: Modifier, navController: NavHostController) {
     val currentDestination = navBackStackEntry?.destination
 
     NavigationBar(
-        modifier = modifier.height(MySettings.NavigationBarSettings.heightDp),
+        modifier = Modifier.height(MySettings.NavigationBarSettings.heightDp),
         containerColor = MySettings.ColorThemeLight.primary,
         contentColor = contentColorFor(backgroundColor = MySettings.ColorThemeLight.primary)
 
@@ -155,8 +161,8 @@ fun RowScope.AddItem(
             it.route == screen.route
         } == true,
         onClick = {
-            navController.navigate(screen.route){
-                popUpTo(MAIN_ROUTE){
+            navController.navigate(screen.route) {
+                popUpTo(MAIN_ROUTE) {
                     inclusive = true
                 }
             }

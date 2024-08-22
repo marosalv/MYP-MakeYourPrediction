@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.CardFiller
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.screens.MyBottomBar
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.MySettings
@@ -54,11 +55,12 @@ fun HistoryScreen(
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
-        modifier = Modifier
-            .nestedScroll(scrollBehaviour.nestedScrollConnection),
-        topBar = {
-            MyTopBar(Screen.History, scrollBehaviour, activity.baseContext, navController)
-        }) { paddingValues ->
+        modifier = Modifier.nestedScroll(scrollBehaviour.nestedScrollConnection).fillMaxSize(),
+        bottomBar = { MyBottomBar(navController = navController) },
+        topBar = { MyTopBar(Screen.History, scrollBehaviour, activity.baseContext, navController) }
+    ) {itt->
+        itt.calculateBottomPadding()
+        itt.calculateTopPadding()
 
         val state = rememberLazyListState()
         val updatedList = updatedCardFiller(activity = activity)
@@ -67,12 +69,7 @@ fun HistoryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(brush = MySettings.ColorThemeLight.background)
-                .padding(paddingValues)
-                .padding(
-                    start = MySettings.Paddings.medium,
-                    end = MySettings.Paddings.medium,
-                    bottom = MySettings.NavigationBarSettings.heightDp
-                ),
+                .padding(itt),
             state = state,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally

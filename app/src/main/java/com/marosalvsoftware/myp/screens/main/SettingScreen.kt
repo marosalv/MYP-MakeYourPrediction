@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.marosalvsoftware.myp.MainActivity
+import com.marosalvsoftware.myp.screens.MyBottomBar
 import com.marosalvsoftware.myp.screens.MyTopBar
 import com.marosalvsoftware.myp.screens.Screen
 import com.marosalvsoftware.myp.settings.DefaultListSettings
@@ -38,15 +39,16 @@ fun SettingsScreen(
 
     val scrollBehaviour = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        topBar = {
-            MyTopBar(screen = Screen.Settings, scrollBehaviour, activity.baseContext, navController)
-        }) { paddingValues ->
+        modifier = Modifier.fillMaxSize(),
+        bottomBar = { MyBottomBar(navController = navController) },
+        topBar = { MyTopBar(screen = Screen.Settings, scrollBehaviour, activity.baseContext, navController) }
+    ) {itt->
 
         Column(
             modifier = Modifier
                 .background(brush = MySettings.ColorThemeLight.background)
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(itt),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {

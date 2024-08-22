@@ -43,6 +43,12 @@ interface FirebaseActions {
         if(isUserSignedIn())        onCompleteLogin()
     }
 
+    suspend fun resetPassword(email: String, onCompleteReset: () -> Unit)
+    {
+        Firebase.auth.sendPasswordResetEmail(email).await()
+        onCompleteReset()
+    }
+
     fun getCurrentUser() = Firebase.auth.currentUser
 
     fun isUserSignedIn() = Firebase.auth.currentUser != null
